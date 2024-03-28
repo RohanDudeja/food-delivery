@@ -9,11 +9,9 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var config *Config
-
 // readFile for reading development.yaml file
 func readFile(cfg *Config) {
-	f, err := os.Open("./config/development.yaml")
+	f, err := os.Open("d:/go-workspace/food-delivery/config/development.yaml")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(2)
@@ -31,13 +29,8 @@ func readFile(cfg *Config) {
 func BuildConfig() *Config {
 	var cfg Config
 	readFile(&cfg)
-	config = &cfg
 	// fmt.Printf("%+v", cfg)
 	return &cfg
-}
-
-func GetConfig() *Config {
-	return config
 }
 
 func (config *Config) DbURL() string {

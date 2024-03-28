@@ -10,7 +10,6 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/pressly/goose v2.7.0+incompatible
 	gopkg.in/yaml.v3 v3.0.1
-	honnef.co/go/tools v0.4.7
 )
 
 require (

@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"honnef.co/go/tools/lintcmd/cache"
 )
 
 type Storage struct {
@@ -18,29 +17,23 @@ type Storage struct {
 	Redis *redis.UniversalClient
 }
 
-type Cache struct {
-	Cache cache.Cache
-	Mutex sync.Mutex
-}
-
 func bindStorage(app *App) error {
 	var err error
-	app.Storage.DB, err = InitialiseDB(app.Config.DbURL())
+	app.Storage.DB, err = initialiseDB(app.Config.DbURL())
 	if err != nil {
 		log.Printf("InitialiseDB error: %v", err)
 		return err
 	}
-	app.Storage.Redis, err = InitialiseRedis(app.Config)
+	app.Storage.Redis, err = initialiseRedis(app.Config)
 	if err != nil {
 		log.Printf("InitialiseRedis error: %v", err)
 		return err
 	}
-
 	return nil
 }
 
 // InitialiseDB ...assign connection to global *gorm.DB variable DB
-func InitialiseDB(dbString string) (*gorm.DB, error) {
+func initialiseDB(dbString string) (*gorm.DB, error) {
 	db, err := gorm.Open("mysql", dbString)
 	if err != nil {
 		log.Printf("DB: failed to create client: %v\n", err)
@@ -52,7 +45,7 @@ func InitialiseDB(dbString string) (*gorm.DB, error) {
 	return db, nil
 }
 
-func InitialiseRedis(config *config.Config) (*redis.UniversalClient, error) {
+func initialiseRedis(config *config.Config) (*redis.UniversalClient, error) {
 	redisClient := redis.NewUniversalClient(&redis.UniversalOptions{
 		Addrs:    []string{config.Redis.Host + ":" + strconv.Itoa(config.Redis.Port)},
 		Password: config.Redis.Password,
@@ -65,4 +58,8 @@ func InitialiseRedis(config *config.Config) (*redis.UniversalClient, error) {
 	}
 	log.Println(pong)
 	return &redisClient, nil
+}
+
+func NewMutex() *sync.Mutex {
+	return &sync.Mutex{}
 }
