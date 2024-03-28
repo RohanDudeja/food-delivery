@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  cache:
+    image: redis
+    ports:
+      - 56379:6379
+    container_name: redis
+    networks:
+      - food-delivery-networks
+
+  db:
+    image: mysql
+    platform: linux/x86_64
+    container_name: db
+    environment:
+      - MYSQL_DATABASE=food-delivery
+      - MYSQL_USER=food-delivery
+      - MYSQL_PASSWORD=food-delivery
+      - MYSQL_ROOT_PASSWORD=food-delivery
+    ports:
+      - "53306:3306"
+    networks:
+      - food-delivery-networks
+  
+networks:
+  food-delivery-networks:
+    external: true
+    

@@ -1,0 +1,20 @@
+# Server configurations
+app:
+  host: "localhost"
+  port: 8080
+
+# Database credentials
+database:
+  user_name: "food-delivery"
+  password: "food-delivery"
+  port: 53306
+  db_name: "food-delivery"
+  host: "localhost"
+
+
+# Redis configuration
+redis:
+  host: "localhost"
+  port: 56379
+  password: ""
+  db: 0
